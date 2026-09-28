@@ -7,6 +7,12 @@ pipeline {
 
     stages {
 
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Build') {
             steps {
                 dir('backend') {
@@ -15,9 +21,19 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                dir('backend') {
+                    withSonarQubeEnv('SonarQube') {
+                        sh './mvnw sonar:sonar -Dsonar.projectKey=mayazahrouni-5ia1-appgestion'
+                    }
+                }
+            }
+        }
+
         stage('Docker Build') {
             steps {
-                sh 'docker build -t appgestion-backend:latest ./backend'
+                sh 'docker build -t mayazahrouni_5ia1_appgestiondesprojets:latest ./backend'
             }
         }
 
