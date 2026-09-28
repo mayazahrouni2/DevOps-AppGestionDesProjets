@@ -7,12 +7,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Build') {
             steps {
                 dir('backend') {
@@ -23,13 +17,13 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'sudo docker build -t appgestion-backend:latest ./backend'
+                sh 'docker build -t appgestion-backend:latest ./backend'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'sudo docker compose up -d'
+                sh 'docker compose up -d'
             }
         }
     }
