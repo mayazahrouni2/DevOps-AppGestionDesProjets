@@ -44,13 +44,54 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            echo 'Deployment réussi !'
-        }
+post {
+    success {
+        echo 'Deployment réussi !'
 
-        failure {
-            echo 'Pipeline échoué.'
-        }
+        emailext(
+            to: 'maya.zahrouni@gmail.com',
+            subject: "SUCCESS - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+            body: """
+Bonjour,
+
+Le pipeline Jenkins s'est terminé avec succès.
+
+Projet : ${env.JOB_NAME}
+Build : #${env.BUILD_NUMBER}
+Statut : SUCCESS
+
+URL du build :
+${env.BUILD_URL}
+
+Le déploiement Docker a été effectué avec succès.
+
+Cordialement,
+Jenkins
+"""
+        )
+    }
+
+    failure {
+        echo 'Pipeline échoué.'
+
+        emailext(
+            to: 'maya.zahrouni@gmail.com',
+            subject: "FAILURE - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+            body: """
+Bonjour,
+
+Le pipeline Jenkins a échoué.
+
+Projet : ${env.JOB_NAME}
+Build : #${env.BUILD_NUMBER}
+Statut : FAILURE
+
+Consultez les logs :
+${env.BUILD_URL}
+
+Cordialement,
+Jenkins
+"""
+        )
     }
 }
