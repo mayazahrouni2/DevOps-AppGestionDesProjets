@@ -44,14 +44,15 @@ pipeline {
         }
     }
 
-post {
-    success {
-        echo 'Deployment réussi !'
+    post {
 
-        emailext(
-            to: 'maya.zahrouni@gmail.com',
-            subject: "SUCCESS - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            body: """
+        success {
+            echo 'Deployment réussi !'
+
+            emailext(
+                to: 'maya.zahrouni@gmail.com',
+                subject: "SUCCESS - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
 Bonjour,
 
 Le pipeline Jenkins s'est terminé avec succès.
@@ -68,16 +69,16 @@ Le déploiement Docker a été effectué avec succès.
 Cordialement,
 Jenkins
 """
-        )
-    }
+            )
+        }
 
-    failure {
-        echo 'Pipeline échoué.'
+        failure {
+            echo 'Pipeline échoué.'
 
-        emailext(
-            to: 'maya.zahrouni@gmail.com',
-            subject: "FAILURE - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            body: """
+            emailext(
+                to: 'maya.zahrouni@gmail.com',
+                subject: "FAILURE - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
 Bonjour,
 
 Le pipeline Jenkins a échoué.
@@ -92,6 +93,7 @@ ${env.BUILD_URL}
 Cordialement,
 Jenkins
 """
-        )
+            )
+        }
     }
 }
