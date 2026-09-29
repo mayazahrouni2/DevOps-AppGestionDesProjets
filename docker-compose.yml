@@ -11,8 +11,7 @@ services:
       - mysql-data:/var/lib/mysql
 
   backend:
-    build:
-      context: ./backend
+    image: mayazahrouni_5ia1_appgestiondesprojets:latest
     container_name: appgestion-backend
     ports:
       - "8080:8080"
